@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Document Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0 20px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; padding: 12px 20px; border: none; cursor: pointer; border-radius: 4px; }
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; background: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h2>Generate AI Research Report PDF</h2>
+    <form method="POST" action="/generate">
+        <label for="topic">Enter Report Topic:</label>
+        <input type="text" id="topic" name="topic" placeholder="e.g., Quantum Computing Trends" required>
+        <button type="submit">Generate PDF</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <p><strong>Status:</strong> {{ result }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>
