@@ -5,3 +5,4 @@ prerequisite
 python dotenv
 google-genai
 reportlab
+flask

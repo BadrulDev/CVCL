@@ -5,24 +5,49 @@
     <title>AI Document Generator</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0 20px; box-sizing: border-box; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0 20px; box-sizing: border-box; }
         button { background-color: #007bff; color: white; padding: 12px 20px; border: none; cursor: pointer; border-radius: 4px; }
         button:hover { background-color: #0056b3; }
+        .reset-btn { background-color: #dc3545; float: right; padding: 6px 12px; font-size: 12px; }
+        .reset-btn:hover { background-color: #bd2130; }
         .result { margin-top: 20px; padding: 15px; border-radius: 4px; background: #f4f4f4; }
+        .card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .badge { background: #e2e3e5; color: #383d41; padding: 4px 8px; border-radius: 4px; font-size: 13px; }
     </style>
 </head>
 <body>
-    <h2>Generate AI Research Report PDF</h2>
-    <form method="POST" action="/generate">
-        <label for="topic">Enter Report Topic:</label>
-        <input type="text" id="topic" name="topic" placeholder="e.g., Quantum Computing Trends" required>
-        <button type="submit">Generate PDF</button>
-    </form>
+
+    <div class="card">
+        {% if not has_api_key %}
+        <!-- STEP 1: API KEY PROMPT -->
+        <h2>Step 1: Enter Gemini API Key</h2>
+        <p>Please provide your API key before generating reports.</p>
+        <form method="POST" action="/save-key">
+            <label for="api_key">Gemini API Key:</label>
+            <input type="password" id="api_key" name="api_key" placeholder="AIzaSy..." required>
+            <button type="submit">Set API Key</button>
+        </form>
+
+        {% else %}
+        <!-- STEP 2: TOPIC GENERATION PROMPT -->
+        <a href="/clear-key"><button class="reset-btn">Change API Key</button></a>
+        <h2>Step 2: Enter Report Topic</h2>
+        <p>Active Key: <span class="badge">••••••••{{ masked_key }}</span></p>
+        
+        <form method="POST" action="/generate">
+            <label for="topic">Report Topic:</label>
+            <input type="text" id="topic" name="topic" placeholder="e.g., Quantum Computing Trends" required>
+            <button type="submit">Generate PDF</button>
+        </form>
+        {% endif %}
+    </div>
 
     {% if result %}
     <div class="result">
-        <p><strong>Status:</strong> {{ result }}</p>
+        <p><strong>Status:</strong></p>
+        <p>{{ result }}</p>
     </div>
     {% endif %}
+
 </body>
 </html>
